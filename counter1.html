@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadline Developer Animation</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+        }
+
+        .header-section p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .deadline-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            padding: 25px;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        /* Status Message */
+        .status-message {
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            background: linear-gradient(90deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.2));
+            border: 2px solid rgba(243, 156, 18, 0.4);
+            animation: pulse 2s infinite;
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+            }
+        }
+
+        /* Developer Scene */
+        .developer-scene {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+            background: linear-gradient(to bottom, #1a2a3a 0%, #0d1b2a 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Desk */
+        .desk {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, #3e2a1f 0%, #5d4037 100%);
+            border-top: 5px solid #4e342e;
+        }
+
+        /* Computer Setup */
+        .monitor {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 150px;
+            background: #1a1a1a;
+            border-radius: 10px 10px 0 0;
+            border: 12px solid #333;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+        .monitor-screen {
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-lines {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.3;
+            width: 100%;
+        }
+
+        .monitor-stand {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 15px;
+            background: #555;
+        }
+
+        .monitor-base {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 8px;
+            background: #666;
+            border-radius: 5px;
+        }
+
+        /* Developer Character */
+        .developer {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-100px);
+            width: 80px;
+            height: 130px;
+            z-index: 1;
+        }
+
+        .developer-head {
+            position: absolute;
+            top: 0;
+            left: 25px;
+            width: 30px;
+            height: 30px;
+            background: #ffcc99;
+            border-radius: 50%;
+        }
+
+        .developer-body {
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            width: 50px;
+            height: 60px;
+            background: #3498db;
+            border-radius: 8px;
+        }
+
+        .developer-arm {
+            position: absolute;
+            top: 35px;
+            left: 65px;
+            width: 50px;
+            height: 12px;
+            background: #ffcc99;
+            border-radius: 8px;
+            transform-origin: left center;
+            animation: typing 0.8s infinite alternate;
+        }
+
+        @keyframes typing {
+            0% {
+                transform: rotate(10deg);
+            }
+
+            100% {
+                transform: rotate(-5deg);
+            }
+        }
+
+        .developer-chair {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-105px);
+            width: 50px;
+            height: 50px;
+            background: #555;
+            border-radius: 5px;
+        }
+
+        /* Mobile-Optimized Stress and Timer Indicators */
+        .mobile-indicators {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 10;
+            gap: 5px;
+        }
+
+        .stress-indicator {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 140px;
+            backdrop-filter: blur(5px);
+        }
+
+        .stress-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .stress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stress-fill {
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, #2ecc71, #f39c12, #e74c3c);
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+
+        .deadline-timer {
+            background: rgba(231, 76, 60, 0.95);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            min-width: 150px;
+            backdrop-filter: blur(5px);
+        }
+
+        .deadline-timer h3 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .deadline-count {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        /* Coffee Cup */
+        .coffee-cup {
+            position: absolute;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(130px);
+            width: 25px;
+            height: 35px;
+            background: #8b4513;
+            border-radius: 0 0 8px 8px;
+            z-index: 3;
+        }
+
+        .coffee-cup:after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -4px;
+            width: 33px;
+            height: 12px;
+            background: #8b4513;
+            border-radius: 50%;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 25px 0;
+        }
+
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .progress {
+            height: 18px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-weight: bold;
+            color: #000;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Time Units */
+        .time-units {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        .time-unit.days {
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .time-unit.hours {
+            border-top: 3px solid var(--success-color);
+        }
+
+        .time-unit.minutes {
+            border-top: 3px solid var(--warning-color);
+        }
+
+        .time-unit.seconds {
+            border-top: 3px solid var(--danger-color);
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        /* Manual Timer Controls */
+        .manual-timer-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .manual-timer-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timer-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .timer-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .timer-control-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer-control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 8px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .timer-set-btn {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-custom {
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: 100%;
+            min-height: 55px;
+        }
+
+        .btn-start {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: linear-gradient(90deg, #27ae60, #219653);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-panic {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-panic:hover {
+            background: linear-gradient(90deg, #c0392b, #a93226);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-reset:hover {
+            background: linear-gradient(90deg, #2980b9, #1f618d);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-set {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .btn-set:hover {
+            background: linear-gradient(90deg, #8e44ad, #7d3c98);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(155, 89, 182, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 2rem;
+            }
+
+            .header-section p {
+                font-size: 1rem;
+            }
+
+            .deadline-container {
+                padding: 20px 15px;
+            }
+
+            .status-message {
+                font-size: 1.1rem;
+                padding: 12px;
+                margin: 10px 0;
+            }
+
+            .developer-scene {
+                height: 280px;
+            }
+
+            .monitor {
+                width: 220px;
+                height: 130px;
+                border-width: 10px;
+            }
+
+            .code-lines {
+                font-size: 11px;
+                top: 6px;
+                left: 10px;
+            }
+
+            .mobile-indicators {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .stress-indicator,
+            .deadline-timer {
+                width: 90%;
+                min-width: unset;
+                max-width: 280px;
+            }
+
+            .stress-indicator {
+                order: 2;
+            }
+
+            .deadline-timer {
+                order: 1;
+            }
+
+            .deadline-count {
+                font-size: 1.8rem;
+            }
+
+            .time-units {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .time-unit {
+                padding: 12px 8px;
+                min-height: 90px;
+            }
+
+            .time-value {
+                font-size: 1.8rem;
+            }
+
+            .time-label {
+                font-size: 0.85rem;
+            }
+
+            .timer-controls-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .btn-reset {
+                grid-column: span 1;
+            }
+
+            .btn-custom {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+                min-height: 50px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+
+            .header-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .developer-scene {
+                height: 250px;
+            }
+
+            .monitor {
+                width: 190px;
+                height: 115px;
+                border-width: 8px;
+            }
+
+            .developer {
+                transform: translateX(-85px);
+                width: 70px;
+                height: 110px;
+            }
+
+            .developer-head {
+                left: 20px;
+                width: 25px;
+                height: 25px;
+            }
+
+            .developer-body {
+                left: 12px;
+                width: 45px;
+                height: 50px;
+            }
+
+            .developer-arm {
+                left: 57px;
+                width: 40px;
+                height: 10px;
+            }
+
+            .developer-chair {
+                transform: translateX(-90px);
+                width: 45px;
+                height: 45px;
+            }
+
+            .coffee-cup {
+                transform: translateX(110px);
+                width: 20px;
+                height: 30px;
+            }
+
+            .coffee-cup:after {
+                width: 28px;
+                height: 10px;
+                top: -6px;
+                left: -3px;
+            }
+
+            .mobile-indicators {
+                padding: 0 8px;
+            }
+
+            .stress-title,
+            .deadline-timer h3 {
+                font-size: 0.85rem;
+            }
+
+            .deadline-count {
+                font-size: 1.5rem;
+            }
+
+            .progress-title {
+                font-size: 1rem;
+            }
+
+            .time-units {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .time-unit {
+                min-height: 80px;
+            }
+
+            .time-value {
+                font-size: 1.6rem;
+            }
+
+            .timer-input {
+                padding: 8px 10px;
+                font-size: 1rem;
+            }
+
+            .timer-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .developer-scene {
+                height: 230px;
+            }
+
+            .monitor {
+                width: 170px;
+                height: 100px;
+            }
+
+            .code-lines {
+                font-size: 10px;
+            }
+
+            .time-units {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .time-unit {
+                padding: 10px 6px;
+                min-height: 75px;
+            }
+
+            .time-value {
+                font-size: 1.4rem;
+            }
+
+            .time-label {
+                font-size: 0.8rem;
+                letter-spacing: 0.5px;
+            }
+
+            .btn-custom {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+                min-height: 45px;
+            }
+
+            .timer-input {
+                padding: 7px 8px;
+                font-size: 0.95rem;
+            }
+
+            .timer-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation for numbers */
+        @keyframes flip {
+            0% {
+                transform: rotateX(0);
+            }
+
+            100% {
+                transform: rotateX(360deg);
+            }
+        }
+
+        .flip-animation {
+            animation: flip 0.6s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1><i class="fas fa-laptop-code"></i> Deadline Developer</h1>
+            <p>Developer working against the clock to meet the deadline. Watch as stress levels rise with time!</p>
+        </div>
+
+        <div class="deadline-container">
+            <div class="status-message" id="status-message">
+                <i class="fas fa-clock"></i> Deadline: 4 Days Remaining - Keep Coding!
+            </div>
+
+            <!-- Developer Animation Scene -->
+            <div class="developer-scene">
+                <!-- Mobile-Optimized Indicators -->
+                <div class="mobile-indicators">
+                    <!-- Stress Level Indicator -->
+                    <div class="stress-indicator">
+                        <div class="stress-title">
+                            <span><i class="fas fa-heartbeat"></i> Stress</span>
+                            <span id="stress-percentage">30%</span>
+                        </div>
+                        <div class="stress-bar">
+                            <div class="stress-fill" id="stress-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Deadline Timer -->
+                    <div class="deadline-timer">
+                        <h3><i class="fas fa-hourglass-half"></i> Deadline In</h3>
+                        <div class="deadline-count" id="deadline-count">4:00:00:00</div>
+                    </div>
+                </div>
+
+                <!-- Desk -->
+                <div class="desk"></div>
+
+                <!-- Developer Character -->
+                <div class="developer">
+                    <div class="developer-head"></div>
+                    <div class="developer-body"></div>
+                    <div class="developer-arm"></div>
+                    <div class="developer-chair"></div>
+                </div>
+
+                <!-- Computer Monitor -->
+                <div class="monitor">
+                    <div class="monitor-screen">
+                        <div class="code-lines" id="code-lines">
+                            > npm start<br>
+                            > Starting development server...<br>
+                            > Listening on port 3000<br>
+                            > Fixing bugs...<br>
+                            > Loading dependencies...<br>
+                            > Compiling SCSS...<br>
+                            > Building components...<br>
+                            > Deadline approaching!
+                        </div>
+                    </div>
+                    <div class="monitor-stand"></div>
+                    <div class="monitor-base"></div>
+                </div>
+
+                <!-- Coffee Cup -->
+                <div class="coffee-cup"></div>
+            </div>
+
+            <!-- Time Progress -->
+            <div class="progress-container">
+                <div class="progress-title">
+                    <span><i class="fas fa-tasks"></i> Project Completion</span>
+                    <span id="progress-percentage">25%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="progress-bar" style="width: 25%">25%</div>
+                </div>
+            </div>
+
+            <!-- Time Units -->
+            <div class="time-units">
+                <div class="time-unit days">
+                    <div class="time-value" id="days">4</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-unit hours">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-unit minutes">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-unit seconds">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+
+            <!-- Manual Timer Controls -->
+            <div class="manual-timer-section">
+                <div class="manual-timer-title">
+                    <i class="fas fa-edit"></i> Manual Timer Control
+                </div>
+
+                <div class="timer-controls-grid">
+                    <!-- Days Control -->
+                    <div class="timer-control-group">
+                        <div class="timer-control-label">
+                            <i class="far fa-calendar"></i> Days
+                        </div>
+                        <div class="timer-control-buttons">
+                            <button class="timer-btn minus-btn" data-unit="days">-</button>
+                            <input type="number" class="timer-input" id="manual-days" value="4" min="0" max="99">
+                            <button class="timer-btn plus-btn" data-unit="days">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Hours Control -->
+                    <div class="timer-control-group">
+                        <div class="timer-control-label">
+                            <i class="far fa-clock"></i> Hours
+                        </div>
+                        <div class="timer-control-buttons">
+                            <button class="timer-btn minus-btn" data-unit="hours">-</button>
+                            <input type="number" class="timer-input" id="manual-hours" value="0" min="0" max="23">
+                            <button class="timer-btn plus-btn" data-unit="hours">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Minutes Control -->
+                    <div class="timer-control-group">
+                        <div class="timer-control-label">
+                            <i class="fas fa-hourglass-start"></i> Minutes
+                        </div>
+                        <div class="timer-control-buttons">
+                            <button class="timer-btn minus-btn" data-unit="minutes">-</button>
+                            <input type="number" class="timer-input" id="manual-minutes" value="0" min="0" max="59">
+                            <button class="timer-btn plus-btn" data-unit="minutes">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Seconds Control -->
+                    <div class="timer-control-group">
+                        <div class="timer-control-label">
+                            <i class="fas fa-hourglass-end"></i> Seconds
+                        </div>
+                        <div class="timer-control-buttons">
+                            <button class="timer-btn minus-btn" data-unit="seconds">-</button>
+                            <input type="number" class="timer-input" id="manual-seconds" value="0" min="0" max="59">
+                            <button class="timer-btn plus-btn" data-unit="seconds">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-custom btn-set timer-set-btn" id="set-timer-btn">
+                    <i class="fas fa-check-circle"></i> Set Manual Timer
+                </button>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="btn btn-custom btn-start" id="start-btn">
+                    <i class="fas fa-play"></i> Start Work
+                </button>
+                <button class="btn btn-custom btn-panic" id="panic-btn">
+                    <i class="fas fa-running"></i> Panic Mode
+                </button>
+                <button class="btn btn-custom btn-reset" id="reset-btn">
+                    <i class="fas fa-redo"></i> Reset Deadline
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Deadline Developer Animation &copy; 2026 | Made with HTML, CSS, JavaScript & Bootstrap</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Set initial deadline to 4 days from now
+        let deadline = new Date();
+        deadline.setDate(deadline.getDate() + 4);
+        deadline.setHours(23, 59, 59, 999);
+
+        // Get DOM elements
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const deadlineCountElement = document.getElementById('deadline-count');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const stressFill = document.getElementById('stress-fill');
+        const stressPercentage = document.getElementById('stress-percentage');
+        const statusMessage = document.getElementById('status-message');
+        const codeLines = document.getElementById('code-lines');
+        const startBtn = document.getElementById('start-btn');
+        const panicBtn = document.getElementById('panic-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Manual timer elements
+        const manualDaysInput = document.getElementById('manual-days');
+        const manualHoursInput = document.getElementById('manual-hours');
+        const manualMinutesInput = document.getElementById('manual-minutes');
+        const manualSecondsInput = document.getElementById('manual-seconds');
+        const setTimerBtn = document.getElementById('set-timer-btn');
+        const minusBtns = document.querySelectorAll('.minus-btn');
+        const plusBtns = document.querySelectorAll('.plus-btn');
+
+        // Initial values
+        let totalTime = 4 * 24 * 60 * 60 * 1000; // 4 days in milliseconds
+        let workMode = false;
+        let panicMode = false;
+        let completion = 25; // Initial completion percentage
+        let stressLevel = 30; // Initial stress percentage
+        let timerInterval;
+
+        // Update countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeRemaining = deadline - now;
+
+            // If deadline has passed
+            if (timeRemaining < 0) {
+                deadlineCountElement.textContent = "DEADLINE!";
+                daysElement.textContent = '00';
+                hoursElement.textContent = '00';
+                minutesElement.textContent = '00';
+                secondsElement.textContent = '00';
+
+                // Update status
+                statusMessage.innerHTML = '<i class="fas fa-times-circle"></i> Deadline Missed! Project Failed!';
+                statusMessage.style.background = 'linear-gradient(90deg, rgba(231, 76, 60, 0.3), rgba(192, 57, 43, 0.3))';
+                statusMessage.style.borderColor = 'rgba(231, 76, 60, 0.5)';
+
+                // Developer stops working
+                document.querySelector('.developer-arm').style.animationPlayState = 'paused';
+
+                clearInterval(timerInterval);
+                return;
+            }
+
+            // Calculate time units
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            // Update display with animation
+            updateDisplayWithAnimation(days, hours, minutes, seconds);
+
+            // Update deadline count
+            deadlineCountElement.textContent = `${days}:${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+            // Update progress and stress based on time
+            updateProgressAndStress(timeRemaining);
+
+            // Update status message based on time remaining
+            updateStatusMessage(days, hours);
+
+            // Update code lines with funny messages
+            updateCodeLines(days, hours, minutes);
+        }
+
+        // Update display with animation
+        function updateDisplayWithAnimation(days, hours, minutes, seconds) {
+            updateWithAnimation(daysElement, days < 10 ? '0' + days : days);
+            updateWithAnimation(hoursElement, hours < 10 ? '0' + hours : hours);
+            updateWithAnimation(minutesElement, minutes < 10 ? '0' + minutes : minutes);
+            updateWithAnimation(secondsElement, seconds < 10 ? '0' + seconds : seconds);
+        }
+
+        // Update element with flip animation if value changed
+        function updateWithAnimation(element, newValue) {
+            const currentValue = element.textContent;
+            if (currentValue !== newValue) {
+                element.classList.add('flip-animation');
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.classList.remove('flip-animation');
+                }, 300);
+            } else {
+                element.textContent = newValue;
+            }
+        }
+
+        // Update progress and stress levels
+        function updateProgressAndStress(timeRemaining) {
+            // Calculate time passed
+            const timePassed = totalTime - timeRemaining;
+            const timePercentage = Math.min(100, (timePassed / totalTime) * 100);
+
+            // Update project completion (faster if in work mode)
+            if (workMode) {
+                completion += panicMode ? 0.2 : 0.1;
+                if (completion > 100) completion = 100;
+            }
+
+            // Update stress level (increases with time and panic mode)
+            stressLevel = 30 + (timePercentage * 0.7);
+            if (panicMode) stressLevel += 20;
+            if (stressLevel > 100) stressLevel = 100;
+
+            // Update progress bar
+            progressBar.style.width = `${completion}%`;
+            progressBar.textContent = `${Math.round(completion)}%`;
+            progressPercentage.textContent = `${Math.round(completion)}%`;
+
+            // Update progress bar color based on completion
+            if (completion > 75) {
+                progressBar.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+            } else if (completion > 50) {
+                progressBar.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)';
+            } else {
+                progressBar.style.background = 'linear-gradient(90deg, #3498db, #2980b9)';
+            }
+
+            // Update stress bar
+            stressFill.style.width = `${stressLevel}%`;
+            stressPercentage.textContent = `${Math.round(stressLevel)}%`;
+
+            // Update stress bar color
+            if (stressLevel > 75) {
+                stressFill.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+            } else if (stressLevel > 50) {
+                stressFill.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)';
+            } else {
+                stressFill.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+            }
+        }
+
+        // Update status message
+        function updateStatusMessage(days, hours) {
+            if (days === 0 && hours < 24) {
+                statusMessage.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Less than 24 hours left! Code Faster!';
+                statusMessage.style.background = 'linear-gradient(90deg, rgba(231, 76, 60, 0.3), rgba(192, 57, 43, 0.3))';
+                statusMessage.style.borderColor = 'rgba(231, 76, 60, 0.5)';
+                statusMessage.style.animationDuration = '1s';
+            } else if (days === 1) {
+                statusMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Only 1 day remaining! Keep pushing!';
+                statusMessage.style.background = 'linear-gradient(90deg, rgba(243, 156, 18, 0.3), rgba(230, 126, 34, 0.3))';
+                statusMessage.style.borderColor = 'rgba(243, 156, 18, 0.5)';
+                statusMessage.style.animationDuration = '1.5s';
+            } else if (days < 3) {
+                statusMessage.innerHTML = '<i class="fas fa-clock"></i> Deadline approaching! Stay focused!';
+                statusMessage.style.background = 'linear-gradient(90deg, rgba(52, 152, 219, 0.3), rgba(41, 128, 185, 0.3))';
+                statusMessage.style.borderColor = 'rgba(52, 152, 219, 0.5)';
+            }
+        }
+
+        // Update code lines with funny messages
+        function updateCodeLines(days, hours, minutes) {
+            let messages = [
+                "> npm start",
+                "> Starting development server...",
+                "> Listening on port 3000"
+            ];
+
+            // Add time-specific messages
+            if (days < 1) {
+                messages.push("> Only " + hours + " hours left!");
+                messages.push("> PANIC MODE ACTIVATED!");
+                messages.push("> Coffee supply: CRITICAL");
+                messages.push("> Bugs fixed: Not enough!");
+            } else if (days < 2) {
+                messages.push("> Deadline: " + days + " day remaining");
+                messages.push("> Working overtime...");
+                messages.push("> Coffee level: Low");
+                messages.push("> Sleep: What's that?");
+            } else {
+                messages.push("> Fixing bugs...");
+                messages.push("> Loading dependencies...");
+                messages.push("> Compiling SCSS...");
+                messages.push("> Building components...");
+                messages.push("> Deadline in " + days + " days");
+            }
+
+            // Add work mode messages
+            if (workMode) {
+                messages.push("> Work mode: ACTIVE");
+                if (panicMode) {
+                    messages.push("> PANIC MODE: ENABLED");
+                    messages.push("> Typing speed: MAXIMUM");
+                }
+            }
+
+            // Update code lines
+            codeLines.innerHTML = messages.join("<br>");
+        }
+
+        // Set manual timer function
+        function setManualTimer() {
+            const days = parseInt(manualDaysInput.value) || 0;
+            const hours = parseInt(manualHoursInput.value) || 0;
+            const minutes = parseInt(manualMinutesInput.value) || 0;
+            const seconds = parseInt(manualSecondsInput.value) || 0;
+
+            // Calculate total time in milliseconds
+            const totalSeconds = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60) + seconds;
+            totalTime = totalSeconds * 1000;
+
+            // Set new deadline
+            deadline = new Date();
+            deadline.setTime(deadline.getTime() + totalTime);
+
+            // Update display
+            updateCountdown();
+
+            // Reset progress and stress based on new time
+            completion = 25;
+            stressLevel = 30;
+
+            // Update status
+            statusMessage.innerHTML = `<i class="fas fa-clock"></i> Manual Timer Set: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            statusMessage.style.background = 'rgba(52, 152, 219, 0.3)';
+            statusMessage.style.borderColor = 'rgba(52, 152, 219, 0.5)';
+
+            // Button feedback
+            setTimerBtn.innerHTML = '<i class="fas fa-check"></i> Timer Set!';
+            setTimerBtn.style.background = 'linear-gradient(90deg, #27ae60, #219653)';
+
+            setTimeout(() => {
+                setTimerBtn.innerHTML = '<i class="fas fa-check-circle"></i> Set Manual Timer';
+                setTimerBtn.style.background = 'linear-gradient(90deg, #9b59b6, #8e44ad)';
+            }, 1500);
+        }
+
+        // Manual timer increment/decrement functions
+        function adjustTimerValue(unit, increment) {
+            const input = document.getElementById(`manual-${unit}`);
+            let value = parseInt(input.value) || 0;
+
+            if (increment) {
+                // Increment with max limits
+                if (unit === 'days') value = Math.min(99, value + 1);
+                else if (unit === 'hours') value = Math.min(23, value + 1);
+                else if (unit === 'minutes') value = Math.min(59, value + 1);
+                else if (unit === 'seconds') value = Math.min(59, value + 1);
+            } else {
+                // Decrement with min limit
+                value = Math.max(0, value - 1);
+            }
+
+            input.value = value;
+        }
+
+        // Event Listeners for manual controls
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const unit = this.getAttribute('data-unit');
+                adjustTimerValue(unit, false);
+            });
+        });
+
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const unit = this.getAttribute('data-unit');
+                adjustTimerValue(unit, true);
+            });
+        });
+
+        setTimerBtn.addEventListener('click', setManualTimer);
+
+        // Input validation for manual timer
+        [manualDaysInput, manualHoursInput, manualMinutesInput, manualSecondsInput].forEach(input => {
+            input.addEventListener('change', function () {
+                let value = parseInt(this.value) || 0;
+                const unit = this.id.replace('manual-', '');
+
+                // Set min and max limits
+                if (unit === 'days') {
+                    value = Math.max(0, Math.min(99, value));
+                } else if (unit === 'hours') {
+                    value = Math.max(0, Math.min(23, value));
+                } else if (unit === 'minutes' || unit === 'seconds') {
+                    value = Math.max(0, Math.min(59, value));
+                }
+
+                this.value = value;
+            });
+        });
+
+        // Original Event Listeners
+        startBtn.addEventListener('click', function () {
+            workMode = !workMode;
+
+            if (workMode) {
+                this.innerHTML = '<i class="fas fa-pause"></i> Pause Work';
+                this.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)';
+                document.querySelector('.developer-arm').style.animationPlayState = 'running';
+                statusMessage.innerHTML = '<i class="fas fa-bolt"></i> Work Mode Activated! Coding at full speed!';
+            } else {
+                this.innerHTML = '<i class="fas fa-play"></i> Start Work';
+                this.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+                document.querySelector('.developer-arm').style.animationPlayState = 'paused';
+                statusMessage.innerHTML = '<i class="fas fa-coffee"></i> Taking a break... but deadline is still approaching!';
+            }
+        });
+
+        panicBtn.addEventListener('click', function () {
+            panicMode = !panicMode;
+
+            if (panicMode) {
+                this.innerHTML = '<i class="fas fa-user-ninja"></i> Panic ON';
+                this.style.background = 'linear-gradient(90deg, #9b59b6, #8e44ad)';
+                document.querySelector('.developer-arm').style.animationDuration = '0.3s';
+                statusMessage.innerHTML = '<i class="fas fa-fire"></i> PANIC MODE! Working at 200% speed!';
+                statusMessage.style.animationDuration = '0.5s';
+
+                // Make developer arm move faster
+                document.querySelector('.developer-arm').style.animationDuration = '0.2s';
+            } else {
+                this.innerHTML = '<i class="fas fa-running"></i> Panic Mode';
+                this.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+                document.querySelector('.developer-arm').style.animationDuration = '0.8s';
+                statusMessage.innerHTML = '<i class="fas fa-heartbeat"></i> Panic mode deactivated. Resume normal work.';
+
+                // Reset arm speed
+                document.querySelector('.developer-arm').style.animationDuration = '0.8s';
+            }
+        });
+
+        resetBtn.addEventListener('click', function () {
+            // Reset deadline to 4 days from now
+            deadline = new Date();
+            deadline.setDate(deadline.getDate() + 4);
+            deadline.setHours(23, 59, 59, 999);
+
+            // Reset total time
+            totalTime = 4 * 24 * 60 * 60 * 1000;
+
+            // Reset manual timer inputs
+            manualDaysInput.value = 4;
+            manualHoursInput.value = 0;
+            manualMinutesInput.value = 0;
+            manualSecondsInput.value = 0;
+
+            // Reset values
+            completion = 25;
+            stressLevel = 30;
+            workMode = false;
+            panicMode = false;
+
+            // Reset buttons
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Start Work';
+            startBtn.style.background = 'linear-gradient(90deg, #2ecc71, #27ae60)';
+            panicBtn.innerHTML = '<i class="fas fa-running"></i> Panic Mode';
+            panicBtn.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+
+            // Reset animations
+            document.querySelector('.developer-arm').style.animationPlayState = 'running';
+            document.querySelector('.developer-arm').style.animationDuration = '0.8s';
+
+            // Reset status
+            statusMessage.innerHTML = '<i class="fas fa-clock"></i> Deadline: 4 Days Remaining - Keep Coding!';
+            statusMessage.style.background = 'linear-gradient(90deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.2))';
+            statusMessage.style.borderColor = 'rgba(243, 156, 18, 0.4)';
+            statusMessage.style.animationDuration = '2s';
+
+            updateCountdown();
+
+            // Button feedback
+            this.innerHTML = '<i class="fas fa-check"></i> Reset Complete!';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-redo"></i> Reset Deadline';
+            }, 1500);
+        });
+
+        // Initial update
+        updateCountdown();
+
+        // Update every second
+        timerInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+
+</html>
